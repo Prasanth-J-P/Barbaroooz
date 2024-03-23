@@ -45,9 +45,13 @@
 <div class="container" style="width: 60%; margin-top: 20px; border-style: ridge; border-color: black; border-width: 1px; border-radius: 0;background-color:#dedad9">
     <div class="row">
         <div class="col-12" >
-           <form class="form" action="{{route('appointments.update', $appointments->id)}}"  method="POST" style="padding:20px">
+        @if(empty($slotdetails))
+                <form class="form" method="POST" action="{{route('appointments.checkupdate')}}" style="padding:20px">
                 @csrf
-                @method('PUT')
+                <div class="form-floating mb-3">
+                    <input type="number" class='form-control' name="id" value="{{ $appointments->id }}" max="{{ $appointments->id }}" min="{{ $appointments->id }}"/>
+                    <label for="floatingInput">id...</label>
+                </div>
                 <div class="form-floating mb-3">
                     <input type="text" class='form-control' name="name" value="{{ $appointments->name }}" />
                     <label for="floatingInput">Name...</label>
@@ -57,24 +61,42 @@
                     <label for="floatingInput">Mobile Number...</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="date" class='form-control' name="date" value="{{ $appointments->date }}"   />
+                    <input type="date" class='form-control' name="date" placeholder="date" value="{{ $appointments->date }}"/>
                     <label for="floatingInput">Date...</label>
                 </div>
                 <div class="form-floating mb-3">
-                <select class='form-select' name="slot" value="{{ $appointments->slot }}"   >
+                    <button class="btn btn-primary" type="submit" style="width:100%">Check Available Slots</button>
+                </div>
+                </form>
+                @else
+                <form class="form" action="{{route('appointments.update', $details['id'])}}"  method="POST" style="padding:20px">
+                @csrf
+                @method('PUT')
+                <div class="form-floating mb-3">
+                    <input type="text" class='form-control' name="name" value="{{ $details['name'] }}" />
+                    <label for="floatingInput">Name...</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="number" class='form-control' name="mob_no" value="{{ $details['mob_no'] }}" />
+                    <label for="floatingInput">Mobile Number...</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="date" class='form-control' name="date" min="{{ $details['date'] }}" value="{{ $details['date'] }}"  />
+                    <label for="floatingInput">Date...</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <select class='form-select' name="slot">
                     <option selected>Select slot</option>
-                    <option value="07:00 AM">07:00 AM</option><option value="07:30 AM">07:30 AM</option><option value="08:00 AM">08:00 AM</option><option value="08:30 AM">08:30 AM</option>
-                    <option value="09:00 AM">09:00 AM</option><option value="09:30 AM">09:30 AM</option><option value="10:00 AM">10:00 AM</option><option value="10:30 AM">10:30 AM</option>
-                    <option value="11:00 AM">11:00 AM</option><option value="11:30 AM">11:30 AM</option><option value="12:00 PM">12:00 PM</option><option value="12:30 PM">12:30 PM</option>
-                    <option value="02:00 PM">02:00 PM</option><option value="02:30 PM">02:30 PM</option><option value="03:00 PM">03:00 PM</option><option value="03:30 PM">03:30 PM</option>
-                    <option value="04:00 PM">04:00 PM</option><option value="04:30 PM">04:30 PM</option><option value="05:00 PM">05:00 PM</option><option value="05:30 PM">05:30 PM</option>
-                    <option value="06:00 PM">06:00 PM</option><option value="06:30 PM">06:30 PM</option><option value="07:00 PM">07:00 PM</option><option value="07:30 PM">07:30 PM</option>
+                    @foreach($slotdetails as $slots)
+                    <option value="{{$slots}}">{{$slots}}</option>
+                    @endforeach
                     </select>
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-primary" type="submit" style="width:100%">Book</button>
+                    <button class="btn btn-primary" type="submit" style="width:100%">Update</button>
                 </div>
             </form>
+            @endif
         </div>
     </div>
 </div>

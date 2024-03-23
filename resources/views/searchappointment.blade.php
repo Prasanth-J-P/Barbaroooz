@@ -46,6 +46,41 @@
             <input type="number" id="search" placeholder="Enter your Mobile Number" name="search" style=" position:relative;width: 60vw;height: 6vh;margin-left: 15px; padding-left: 20px; margin-top: 3px; border-bottom-left-radius: 15px; border-top-left-radius: 15px; ">
             <button type="submit" class="btn btn-info" style=" position:absolute;height: 6vh;  margin-left: -16px; margin-top:3px; border-top-right-radius: 15px; border-bottom-right-radius: 15px; padding-top: 2px;">Search</button>
         </form>
+        <h1 style="text-align: center; margin-top: 30px; text-shadow: -1px 2px 0 green; color: black;"><b>Appointment List</b></h1>
+        <table class="table table-dark table-striped my-auto">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Slot</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($appointments as $appointment)
+                    <tr>
+                        <td>{{ $appointment->id }}</td>
+                        <td>{{ $appointment->name }}</td>
+                        <td>{{ $appointment->date }}</td>
+                        <td>{{ $appointment->slot }}</td>
+                        <td>
+                        <div class="row">
+                            <div class="col-md-3">
+                            <form action="{{ route('appointments.delete', $appointment->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-danger" type="submit">Delete</button>
+                            </form></div>
+                            <div class="col-md-3">
+                            <a href="{{ route('appointments.edit', $appointment->id) }}"><button class="btn btn-info">Update</button></a>
+                            </div>
+                        </div>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
         </div>
     </body>
 </html>

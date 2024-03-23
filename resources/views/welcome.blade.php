@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>Barbaroooz</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -41,12 +41,12 @@
 </nav>
 <div class="container-flex">
     <div class="row">
-        <div class="col-md-6 m-0 p-0" style="background-image: url('/images/bridepic.jpg');  background-size: cover; height:85vh">
+        <div class="col-md-6 m-0 p-0" style="background-image: url('/images/bridepic.jpg');  background-size: cover; height:89vh">
             <div style="width:100%;height:100%;background:black;opacity:30%">
                 <h1 style="color:white; float:right">BRIDE MAKEOVER</h1>
             </div>
         </div>
-        <div class="col-md-6 m-0 p-0" style="background-image: url('/images/groompic.jpg');  background-size: cover;height:85vh">
+        <div class="col-md-6 m-0 p-0" style="background-image: url('/images/groompic.jpg');  background-size: cover;height:89vh">
             <div style="width:100%;height:100%;background:black;opacity:30%"><br/><br/><br/><br/>
             <h1 style="color:white; float:left">GROOM MAKEOVER</h1>
         </div>

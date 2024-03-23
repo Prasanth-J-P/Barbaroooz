@@ -12,21 +12,24 @@ class PostController extends Controller
             'search' => 'required|numeric|min:1000000000|max:9999999999'
         ]);
         $searchitem = $validatedData['search'];
-        $appointments=Appointment::where('mob_no', $searchitem)->get();
+        $appointments=Appointment::orderBy('date','desc')->where('mob_no', $searchitem)->get();
         return view('viewappointment',compact('appointments'));
+    }
+    public function search(Request $request)
+    {   
+        $appointments=Appointment::orderBy('date','desc')->get();
+        return view('searchappointment',compact('appointments'));
     }
     public function create()
     {  
         $slotdetails=[];
-        return view('bookingpage');
+        return view('bookingpage',compact('slotdetails'));
     }
 
     public function check(Request $request)
     {  
         $details = $request->validate([
-            'name' => 'required|string|max:50',
-            'mob_no' => 'required|numeric|min:1000000000|max:9999999999',
-            'date' => 'required|date',
+            'date' => 'required|date'
         ]);
         $appointments=Appointment::where('date', $details['date'])->get(['slot']);
         $slot = [
@@ -35,9 +38,23 @@ class PostController extends Controller
             '01:30 PM', '02:00 PM', '02:30 PM', '03:00 PM', '03:30 PM', '04:00 PM', 
             '04:30 PM', '05:00 PM', '05:30 PM', '06:00 PM', '06:30 PM', '07:00 PM'
         ];
-        $slotdetails=$slots-$appointments;
-        print( $slotdetails);
+        $bookedSlots = $appointments->pluck('slot')->toArray();
+        $slotdetails = array_diff($slot, $bookedSlots);
         return view('bookingpage',compact('slotdetails','details'));
+    }
+    public function store(Request $request)
+    {
+
+        
+        $appointments = $request->validate([
+            'name' => 'required|string|max:50',
+            'mob_no' => 'required|numeric|min:1000000000|max:9999999999',
+            'date' => 'required|date',
+            'slot' => 'required|string',
+        ]);
+        Appointment::create($appointments);
+
+        return redirect()->route('homepage')->with('success', 'Appointment created successfully!');
     }
 
 
@@ -55,6 +72,26 @@ class PostController extends Controller
         return view('editappointment',compact('appointments'));
     }
 
+    public function checkupdate(Request $request)
+    {  
+        $details = $request->validate([
+            'id' => 'required|numeric',
+            'name' => 'required|string|max:50',
+            'mob_no'=> 'required|numeric|min:1000000000|max:9999999999',
+            'date' => 'required|date'
+        ]);
+        $appointments=Appointment::where('date', $details['date'])->get(['slot']);
+        $slot = [
+            '07:00 AM', '07:30 AM', '08:00 AM', '08:30 AM', '09:00 AM', '09:30 AM', 
+            '10:00 AM', '10:30 AM', '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM', 
+            '01:30 PM', '02:00 PM', '02:30 PM', '03:00 PM', '03:30 PM', '04:00 PM', 
+            '04:30 PM', '05:00 PM', '05:30 PM', '06:00 PM', '06:30 PM', '07:00 PM'
+        ];
+        $bookedSlots = $appointments->pluck('slot')->toArray();
+        $slotdetails = array_diff($slot, $bookedSlots);
+        return view('editappointment',compact('slotdetails','details'));
+    }
+
     public function update(Request $request, $id)
     {
         $appointments = $request->validate([
@@ -67,22 +104,8 @@ class PostController extends Controller
         $updatingpost = Appointment::findorFail($id);
         $updatingpost->update($appointments);
 
-        return redirect()->route('viewappointment')->with('success', 'Update successfully.');
+        return redirect()->route('searchappointments')->with('success', 'Update successfully.');
     }
 
-    public function store(Request $request)
-    {
 
-       
-        $appointments = $request->validate([
-            'name' => 'required|string|max:50',
-            'mob_no' => 'required|numeric|min:1000000000|max:9999999999',
-            'date' => 'required|date',
-            'slot' => 'required|string',
-        ]);
-        
-        Appointment::create($appointments);
-
-        return redirect()->route('homepage')->with('success', 'Appointment created successfully!');
-    }
 }

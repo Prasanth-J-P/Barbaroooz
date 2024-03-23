@@ -45,33 +45,32 @@
 <div class="container" style="width: 60%; margin-top: 20px; border-style: ridge; border-color: black; border-width: 1px; border-radius: 0;background-color:#dedad9">
     <div class="row">
         <div class="col-12" >
-           <form class="form" action="{{route('appointments.store')}}"  method="POST" style="padding:20px">
-           @csrf
-           <form class="form" method="POST" action="{{route('appointments.check')}}">
+                @if(empty($slotdetails))
+                <form class="form" method="POST" action="{{route('appointments.check')}}" style="padding:20px">
+                @csrf
+                <div class="form-floating mb-3">
+                    <input type="date" class='form-control' name="date" placeholder="date"/>
+                    <label for="floatingInput">Date...</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <button class="btn btn-primary" type="submit" style="width:100%">Check Available Slots</button>
+                </div>
+                </form>
+                @else
+                <form class="form" action="{{route('appointments.store')}}"  method="POST" style="padding:20px">
                 @csrf
                 <div class="form-floating mb-3">
                     <input type="text" class='form-control' name="name" placeholder="Name...." />
                     <label for="floatingInput">Name...</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="number" class='form-control' name="mob_no" placeholder="Description...."/>
+                    <input type="number" class='form-control' name="mob_no"/>
                     <label for="floatingInput">Mobile Number...</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input type="date" class='form-control' name="date"  />
+                    <input type="date" class='form-control' name="date" max="{{ $details['date'] }}" min="{{ $details['date'] }}" value="{{ $details['date'] }}" />
                     <label for="floatingInput">Date...</label>
                 </div>
-                @if(empty($slotdetails))
-                <div class="form-floating mb-3">
-                    <button class="btn btn-primary" type="submit" style="width:100%">Check Available Slots</button>
-                </div>
-                @else
-                <div></div>
-                @endif
-                </form>
-                @if(empty($slotdetails))
-                <div></div>
-                @else
                 <div class="form-floating mb-3">
                     <select class='form-select' name="slot">
                     <option selected>Select slot</option>
@@ -83,8 +82,8 @@
                 <div class="form-group">
                     <button class="btn btn-primary" type="submit" style="width:100%">Book</button>
                 </div>
+                </form>
                 @endif
-            </form>
         </div>
     </div>
 </div>
